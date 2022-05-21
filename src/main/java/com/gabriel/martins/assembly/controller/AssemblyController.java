@@ -14,7 +14,7 @@ public class AssemblyController {
     @Autowired
     private AssemblyService service;
 
-    @GetMapping
+    @GetMapping({"/v1", "/v2"})
     public ResponseEntity<Page<AssemblyDto>> getAssemblies(@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
                                                            @RequestParam(name = "sortParameter", defaultValue = "id") String sortParameter,
@@ -22,7 +22,7 @@ public class AssemblyController {
         return ResponseEntity.ok(service.findAssemblies(pageSize, pageNumber, sortParameter, sortDirection));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/v1/{id}", "/v2/{id}"})
     public ResponseEntity<AssemblyDto> findAssembly(@PathVariable(value = "id") Long assemblyId) {
         return ResponseEntity.ok(service.findAssembly(assemblyId));
     }
