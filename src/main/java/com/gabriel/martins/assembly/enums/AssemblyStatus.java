@@ -4,8 +4,6 @@ import java.util.stream.Stream;
 
 public enum AssemblyStatus {
     APPROVED("APROVADO"),
-    WAITING("AGUARDANDO"),
-    VOTING("VOTANDO"),
     CLOSED("FECHADO"),
     TIED("EMPATE"),
     REPROVED("REPROVADO");

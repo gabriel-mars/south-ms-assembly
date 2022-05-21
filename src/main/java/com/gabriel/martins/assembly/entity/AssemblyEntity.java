@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Table(name = "assembly")
+@Table(name = "assembly", uniqueConstraints = { @UniqueConstraint(name = "constraint_closed_assembly", columnNames = { "id_closed_assembly" }) })
 @Entity
 @Data
 public class AssemblyEntity implements Serializable {
@@ -21,11 +21,8 @@ public class AssemblyEntity implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "available", nullable = false)
-    private Boolean available;
-
-    @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "registered_date", nullable = false)
+    private LocalDateTime registeredDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "assembly_status", length = 10, nullable = false)
@@ -36,4 +33,7 @@ public class AssemblyEntity implements Serializable {
 
     @Column(name = "starting_date", nullable = false)
     private LocalDate startingDate;
+
+    @Column(name = "id_closed_assembly", nullable = false)
+    private Long idClosedAssembly;
 }

@@ -19,20 +19,20 @@ import java.time.LocalDateTime;
 @ApiModel(value = "AssemblyDto", description = "Dados de pauta finalizada")
 public class AssemblyDto {
 
-    @ApiModelProperty(notes = "Id da pauta", example = "1")
+    @ApiModelProperty(notes = "Id da pauta recebida no Kafka", example = "1")
     private Long id;
+
+    @ApiModelProperty(notes = "Id da pauta fechada no serviço de votação", example = "2")
+    private Long idClosedAssembly;
 
     @ApiModelProperty(notes = "Descrição da pauta", example = "Pauta para mudança do síndico do prédio XPTO")
     private String description;
-
-    @ApiModelProperty(notes = "Disponibilidate da pauta", example = "Indica o status de disponibilidade de uma pauta")
-    private Boolean available;
 
     @ApiModelProperty(notes = "Data de criação da pauta", example = "2022-05-18")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdDate;
+    private LocalDateTime registeredDate;
 
     @ApiModelProperty(notes = "Status final da pauta", example = "Indica o status final de uma pauta")
     private AssemblyStatus status;

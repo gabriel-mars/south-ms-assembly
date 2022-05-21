@@ -8,6 +8,7 @@ import com.gabriel.martins.assembly.repository.AssemblyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -33,15 +34,18 @@ public class AssemblyService {
 
     @Async
     public void process(String dto, Acknowledgment acknowledgment) {
-        try{
+        AssemblyEntity entity = null;
+        try {
             LOG.info("Uma pauta finalizada foi recebida!");
-            AssemblyEntity entity = converter.convertToEntity(mapper.readValue(dto, AssemblyDto.class));
-            entity.setId(null);
-            entity.setCreatedDate(LocalDateTime.now());
+            entity = converter.convertToEntity(mapper.readValue(dto, AssemblyDto.class));
+            entity.setRegisteredDate(LocalDateTime.now());
 
             repository.save(entity);
             LOG.info("Uma pauta foi registrada!");
             acknowledgment.acknowledge();
+        } catch (DataIntegrityViolationException dive) {
+            acknowledgment.acknowledge();
+            LOG.error("Pauta já cadastrada {}", entity.getIdClosedAssembly());
         } catch (Exception e) {
             acknowledgment.acknowledge();
             LOG.error("Não foi possível processar a pauta recebida. {}", e.getMessage());
